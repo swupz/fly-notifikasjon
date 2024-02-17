@@ -6,8 +6,11 @@ First have python 3.10.7^ on pc
 Run:
 
 pip install schedule
+
 pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib
+
 pip install tzlocal
+
 python -m pip install --upgrade pywin32
 
 
