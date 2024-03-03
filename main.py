@@ -1,3 +1,5 @@
+IMAGE_FILE = "fly.png"
+
 from win32api import GetSystemMetrics
 import tkinter as tk
 from datetime import datetime
@@ -85,7 +87,7 @@ class Party():
         self.canvas_height = self.window_height + 10
 
         # Set the speed of the plane and rectangle
-        self.speed = 1
+        self.speed = 5
 
         # Create the main window
         self.root = tk.Tk()
@@ -105,16 +107,18 @@ class Party():
         self.canvas.pack()
 
         # Load the plane image
-        self.plane_image = tk.PhotoImage(file='fly3.png') # Replace 'plane_image.png' with the path to your plane image
+        self.plane_image = tk.PhotoImage(file=IMAGE_FILE) # Replace 'plane_image.png' with the path to your plane image
 
         # Create the plane on the canvas
         self.plane = self.canvas.create_image(self.window_width, 60, image=self.plane_image)
 
+        self.lengthOfBanner = getLengthOfBanner(message)
+
         # Create a rectangle on the canvas
-        self.rectangle = self.canvas.create_rectangle(self.canvas_width + 70, 30, self.canvas_width + 400, 90, fill='white')
+        self.rectangle = self.canvas.create_rectangle(self.canvas_width + 70, 30, self.canvas_width + self.lengthOfBanner, 90, fill='white')
         
         # Text
-        self.text = self.canvas.create_text(self.canvas_width + 200, 50, text=message, font=("Helvetica", 18), fill="black")
+        self.text = self.canvas.create_text(self.canvas_width + 35 + self.lengthOfBanner * 0.5, 60, text=message, font=("Helvetica", 18), fill="#010101")
 
         # Start moving the objects
         self.move_objects()
@@ -124,7 +128,7 @@ class Party():
 
     # Function to move the plane and rectangle
     def move_objects(self):
-        if self.canvas.coords(self.plane)[0] < - 500:
+        if self.canvas.coords(self.plane)[0] < - 500 - self.lengthOfBanner:
             self.stop()
 
         self.canvas.move(self.plane, -self.speed, 0)
@@ -144,6 +148,18 @@ def seconds_between_dates(date_str1, date_str2):
     print(delta, seconds)
     return seconds
 
+def getLengthOfBanner(text):
+   length = len(text)
+   multiplier = 20
+
+   if length > 40:
+    multiplier = 13
+   if length > 30:
+    multiplier = 16
+   elif length > 20:
+    multiplier = 18
+
+   return length * multiplier # 20 set to match font size to get correct amount of pixels
 
 def getTimezoneNumber():
     # Get local timezone
@@ -195,7 +211,7 @@ def main():
         now = datetime.now().replace(microsecond=0).isoformat() + timezonelll
         secondsToNextEvent = seconds_between_dates(now, start)
 
-        if secondsToNextEvent < 150 and secondsToNextEvent > 0:
+        if secondsToNextEvent < 150000 and secondsToNextEvent > 0:
             message = "2 min - " + firstEvent["summary"]
             Party(message)
 

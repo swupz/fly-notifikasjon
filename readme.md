@@ -1,3 +1,5 @@
+# Install
+
 Have windows
 
 First have python 3.10.7^ on pc
@@ -19,3 +21,9 @@ Follow https://developers.google.com/calendar/api/quickstart/python
 Run:
 
 python .\main.py
+
+# Making own image
+
+## With photoshop, gimp etc.
+
+Image size: 93px, 65px
