@@ -17,6 +17,7 @@ from googleapiclient.errors import HttpError
 # If modifying these scopes, delete the file token.json.
 SCOPES = ["https://www.googleapis.com/auth/calendar.readonly"]
 calendarEvents = []
+notificatedCalendarEvents = []
 
 def getCalendarEvents():
   """Shows basic usage of the Google Calendar API.
@@ -87,7 +88,7 @@ class Party():
         self.canvas_height = self.window_height + 10
 
         # Set the speed of the plane and rectangle
-        self.speed = 5
+        self.speed = 1
 
         # Create the main window
         self.root = tk.Tk()
@@ -211,14 +212,17 @@ def main():
         now = datetime.now().replace(microsecond=0).isoformat() + timezonelll
         secondsToNextEvent = seconds_between_dates(now, start)
 
-        if secondsToNextEvent < 150 and secondsToNextEvent > 0:
-            message = "2 min - " + firstEvent["summary"]
-            Party(message)
+        if (firstEvent["id"] not in notificatedCalendarEvents):
+
+            if secondsToNextEvent < 150 and secondsToNextEvent > 0:
+                message = "2 min - " + firstEvent["summary"]
+                Party(message)
+                notificatedCalendarEvents.append(firstEvent["id"])
 
    
 # Schedule the function to run every 5 minutes
-schedule.every(2).minutes.do(main)
-schedule.every(10).minutes.do(getCalendarEvents)
+schedule.every(1).minutes.do(main)
+schedule.every(15).minutes.do(getCalendarEvents)
 
 # Start med events
 getCalendarEvents()
