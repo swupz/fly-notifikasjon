@@ -211,7 +211,7 @@ def main():
         now = datetime.now().replace(microsecond=0).isoformat() + timezonelll
         secondsToNextEvent = seconds_between_dates(now, start)
 
-        if secondsToNextEvent < 150000 and secondsToNextEvent > 0:
+        if secondsToNextEvent < 150 and secondsToNextEvent > 0:
             message = "2 min - " + firstEvent["summary"]
             Party(message)
 
